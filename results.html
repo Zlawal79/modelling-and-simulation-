@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evacuation Simulator — Results</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    .results-page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .results-header h2 {
+      font-family: var(--head);
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .results-header h2 span {
+      color: var(--accent);
+    }
+
+    .results-meta {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--muted2);
+      line-height: 2;
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 1.2rem;
+      text-align: center;
+    }
+
+    .no-data h3 {
+      font-family: var(--head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+
+    .no-data p {
+      font-size: .85rem;
+      color: var(--muted);
+      max-width: 340px;
+      line-height: 1.7;
+    }
+
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .charts-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .charts-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .charts-full {
+      margin-bottom: 1rem;
+    }
+
+    .params-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem .8rem;
+    }
+
+    .param-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .4rem .6rem;
+    }
+
+    .param-pill-key {
+      font-family: var(--mono);
+      font-size: .57rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .param-pill-val {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-top: .1rem;
+    }
+
+    .sens-card {
+      margin-bottom: 1rem;
+    }
+
+    .chart-note {
+      font-family: var(--mono);
+      font-size: .6rem;
+      color: var(--muted);
+      margin-top: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .chart-note::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 2px;
+      background: var(--danger);
+    }
+
+    @media (max-width: 900px) {
+      .metrics-strip  { grid-template-columns: repeat(3, 1fr); }
+      .charts-top     { grid-template-columns: 1fr; }
+      .charts-bottom  { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 500px) {
+      .metrics-strip { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">EVAC<span>SIM</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Configure</a></li>
+    <li><a href="results.html" class="active">Results</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+  <div class="results-page">
+
+    <div class="no-data" id="noDataState">
+      <svg width="48" height="48" fill="none" stroke="rgba(0,212,170,0.3)" stroke-width="1.2" viewBox="0 0 24 24">
+        <path d="M3 3v18h18M7 16l4-4 4 4 4-8"/>
+      </svg>
+      <h3>No Results Yet</h3>
+      <p>Go to the Configure page, set your parameters and run the simulation to see results here.</p>
+      <a href="index.html" class="btn">Go to Configure</a>
+    </div>
+
+    <div id="resultsContent" style="display:none">
+
+      <div class="results-header">
+        <div>
+          <div class="label">Simulation Output</div>
+          <h2>Evacuation <span>Results</span></h2>
+        </div>
+        <div class="results-meta" id="resultsMeta"></div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+          <button class="btn" id="downloadBtn" onclick="handleDownload()">
+            Download PDF Report
+          </button>
+          <a href="index.html" class="btn secondary">Reconfigure</a>
+        </div>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric-card" id="mc-mean">
+          <div class="metric-label">Mean Evac. Time</div>
+          <div class="metric-value" id="mv-mean">—</div>
+          <div class="metric-unit">E[T] seconds</div>
+        </div>
+        <div class="metric-card warn" id="mc-p95">
+          <div class="metric-label">95th Percentile</div>
+          <div class="metric-value" id="mv-p95">—</div>
+          <div class="metric-unit">T95 worst-case (s)</div>
+        </div>
+        <div class="metric-card" id="mc-std">
+          <div class="metric-label">Std Deviation</div>
+          <div class="metric-value" id="mv-std">—</div>
+          <div class="metric-unit">&sigma; spread (s)</div>
+        </div>
+        <div class="metric-card" id="mc-exceed">
+          <div class="metric-label">Exceedance Prob.</div>
+          <div class="metric-value" id="mv-exceed">—</div>
+          <div class="metric-unit">P(T &gt; T_safe)</div>
+        </div>
+        <div class="metric-card" id="mc-risk">
+          <div class="metric-label">Risk Level</div>
+          <div class="metric-value" id="mv-risk" style="font-size:1rem;padding-top:.4rem">—</div>
+          <div class="metric-unit">safety classification</div>
+        </div>
+      </div>
+
+      <div class="charts-top">
+        <div class="chart-card">
+          <div class="card-title">Evacuation Time Distribution</div>
+          <canvas id="histChart"></canvas>
+          <div class="chart-note">Red bars exceed T<sub>safe</sub> threshold</div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Cumulative Distribution Function (CDF)</div>
+          <canvas id="cdfChart"></canvas>
+          <div class="chart-note">Dashed line marks T<sub>safe</sub></div>
+        </div>
+      </div>
+
+      <div class="charts-bottom">
+        <div class="chart-card">
+          <div class="card-title">Average Peak Queue per Exit</div>
+          <canvas id="queueChart"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Simulation Parameters Used</div>
+          <div class="params-grid" id="paramsGrid"></div>
+        </div>
+      </div>
+
+      <div class="charts-full">
+        <div class="chart-card">
+          <div class="card-title">Sensitivity Analysis — &Delta;T95 per Parameter</div>
+          <canvas id="sensChart" style="max-height:200px"></canvas>
+        </div>
+      </div>
+
+      <div class="card sens-card">
+        <div class="card-title">Sensitivity Table — Parameter Impact Ranking</div>
+        <table class="data-table" id="sensTable">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Low Value</th>
+              <th>High Value</th>
+              <th>T95 at Low</th>
+              <th>T95 at High</th>
+              <th>&Delta;T95 (s)</th>
+              <th>Impact Level</th>
+            </tr>
+          </thead>
+          <tbody id="sensTableBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="simulation.js"></script>
+<script src="report.js"></script>
+<script>
+  var charts  = {};
+  var _params  = null;
+  var _results = null;
+
+  function handleDownload() {
+    if (!_params || !_results) {
+      alert('No simulation data found. Please run the simulation first.');
+      return;
+    }
+    var btn = document.getElementById('downloadBtn');
+    btn.textContent = 'Generating PDF...';
+    btn.style.opacity = '.6';
+    btn.style.pointerEvents = 'none';
+    setTimeout(function() {
+      try {
+        generatePDFReport(_params, _results);
+      } catch(e) {
+        alert('PDF generation failed: ' + e.message);
+        console.error(e);
+      }
+      btn.textContent = 'Download PDF Report';
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    }, 80);
+  }
+
+  function buildHistogram(results, Tsafe) {
+    var min = results[0], max = results[results.length - 1];
+    var bins = 30;
+    var bw   = (max - min) / bins;
+    var counts = [], labels = [], colors = [];
+
+    for (var i = 0; i < bins; i++) {
+      counts.push(0);
+      var mid = min + (i + 0.5) * bw;
+      labels.push(mid.toFixed(0));
+      colors.push(mid > Tsafe ? 'rgba(244,63,94,0.75)' : 'rgba(168,85,247,0.65)');
+    }
+
+    for (var j = 0; j < results.length; j++) {
+      var b = Math.min(Math.floor((results[j] - min) / bw), bins - 1);
+      counts[b]++;
+    }
+
+    if (charts.hist) charts.hist.destroy();
+    var ctx = document.getElementById('histChart').getContext('2d');
+    charts.hist = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Trial Count',
+          data: counts,
+          backgroundColor: colors,
+          borderWidth: 0,
+          barPercentage: 1.0,
+          categoryPercentage: 1.0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: function(i) { return 'T ~ ' + i[0].label + 's'; },
+              label: function(i) { return i.raw + ' trials'; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 },
+            grid: { color: 'rgba(124,58,237,0.08)' }
+          },
+          y: {
+            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
+            grid: { color: 'rgba(124,58,237,0.08)' }
+          }
+        }
+      }
+    });
+  }
+
+  function buildCDF(results, Tsafe) {
+    var sorted = results.slice().sort(function(a, b) { return a - b; });
+    var step   = Math.max(1, Math.floor(sorted.length / 60));
+    var labels = [], data = [];
+
+    for (var i = 0; i < sorted.length; i += step) {
+      labels.push(sorted[i].toFixed(0));
+      data.push(((i + 1) / sorted.length * 100).toFixed(2));
+    }
+
+    if (charts.cdf) charts.cdf.destroy();
+    var ctx = document.getElementById('cdfChart').getContext('2d');
+    charts.cdf = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'CDF (%)',
+          data: data,
+          borderColor: '#a855f7',
+          backgroundColor: 'rgba(168,85,247,0.06)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(i) { return i.raw + '% of trials <= ' + i.label + 's'; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 },
+            grid: { color: 'rgba(124,58,237,0.08)' }
+          },
+          y: {
+            ticks: {
+              color: '#8b7aab',
+              font: { family: 'IBM Plex Mono', size: 9 },
+              callback: function(v) { return v + '%'; }
+            },
+            grid: { color: 'rgba(124,58,237,0.08)' }
+          }
+        }
+      }
+    });
+  }
+
+  function buildQueueChart(avgQ, E) {
+    var labels = [], colors = [];
+    for (var i = 0; i < E; i++) {
+      labels.push('Exit ' + (i + 1));
+      colors.push(
+        avgQ[i] > 30 ? 'rgba(244,63,94,0.75)' :
+        avgQ[i] > 15 ? 'rgba(245,158,11,0.75)' :
+        'rgba(168,85,247,0.75)'
+      );
+    }
+
+    if (charts.queue) charts.queue.destroy();
+    var ctx = document.getElementById('queueChart').getContext('2d');
+    charts.queue = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Avg Peak Queue Length',
+          data: avgQ,
+          backgroundColor: colors,
+          borderWidth: 0,
+          borderRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            ticks: { color: '#6b5c8a', font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { display: false }
+          },
+          y: {
+            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
+            grid: { color: 'rgba(124,58,237,0.08)' }
+          }
+        }
+      }
+    });
+  }
+
+  function buildSensChart(sensData) {
+    var labels = [], deltas = [], colors = [];
+    var palette = [
+      'rgba(168,85,247,0.8)',
+      'rgba(244,63,94,0.75)',
+      'rgba(245,158,11,0.75)',
+      'rgba(99,179,237,0.75)',
+      'rgba(52,211,153,0.75)'
+    ];
+
+    for (var i = 0; i < sensData.length; i++) {
+      labels.push(sensData[i].label);
+      deltas.push(parseFloat(sensData[i].delta));
+      colors.push(palette[i % palette.length]);
+    }
+
+    if (charts.sens) charts.sens.destroy();
+    var ctx = document.getElementById('sensChart').getContext('2d');
+    charts.sens = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Delta T95 (s)',
+          data: deltas,
+          backgroundColor: colors,
+          borderWidth: 0,
+          borderRadius: 3
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
+            grid: { color: 'rgba(124,58,237,0.08)' },
+            title: {
+              display: true,
+              text: 'Delta T95 (seconds)',
+              color: '#8b7aab',
+              font: { family: 'IBM Plex Mono', size: 9 }
+            }
+          },
+          y: {
+            ticks: { color: '#1a1035', font: { family: 'IBM Plex Sans', size: 11 } },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  }
+
+  function buildSensTable(sensData) {
+    var maxDelta = 0;
+    for (var i = 0; i < sensData.length; i++) {
+      if (parseFloat(sensData[i].delta) > maxDelta) maxDelta = parseFloat(sensData[i].delta);
+    }
+
+    var tbody = document.getElementById('sensTableBody');
+    var rows  = '';
+
+    for (var j = 0; j < sensData.length; j++) {
+      var s   = sensData[j];
+      var pct = maxDelta > 0 ? (parseFloat(s.delta) / maxDelta * 100).toFixed(0) : 0;
+      var impact, badgeClass;
+      if (parseFloat(s.delta) > maxDelta * 0.6) {
+        impact = 'HIGH';   badgeClass = 'badge-danger';
+      } else if (parseFloat(s.delta) > maxDelta * 0.3) {
+        impact = 'MEDIUM'; badgeClass = 'badge-warn';
+      } else {
+        impact = 'LOW';    badgeClass = 'badge-safe';
+      }
+
+      rows += '<tr>' +
+        '<td>' + s.label + '</td>' +
+        '<td>' + s.lowVal + '</td>' +
+        '<td>' + s.hiVal + '</td>' +
+        '<td>' + s.lowP95 + 's</td>' +
+        '<td>' + s.hiP95 + 's</td>' +
+        '<td style="color:var(--accent);font-weight:600">' + s.delta + 's</td>' +
+        '<td>' +
+          '<div class="bar-wrap">' +
+          '<div class="mini-bar" style="width:' + pct + '%"></div>' +
+          '<span class="badge ' + badgeClass + '">' + impact + '</span>' +
+          '</div>' +
+        '</td>' +
+        '</tr>';
+    }
+
+    tbody.innerHTML = rows;
+  }
+
+  function buildParamsGrid(params) {
+    var grid  = document.getElementById('paramsGrid');
+    var items = [
+      { k: 'N',       v: params.N + ' persons' },
+      { k: 'Exits',   v: params.E              },
+      { k: 'Ce',      v: params.cap + ' p/s'   },
+      { k: 'L',       v: params.L + ' m'       },
+      { k: 'mu_r',    v: params.mu + ' s'      },
+      { k: 'sigma_r', v: params.sigma + ' s'   },
+      { k: 'dist',    v: params.dist            },
+      { k: 'v',       v: params.v + ' m/s'     },
+      { k: 'T_safe',  v: params.Tsafe + ' s'   }
+    ];
+
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      html += '<div class="param-pill">' +
+        '<div class="param-pill-key">' + items[i].k + '</div>' +
+        '<div class="param-pill-val">' + items[i].v + '</div>' +
+        '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  window.addEventListener('load', function() {
+    var params  = null;
+    var results = null;
+
+    try {
+      params  = loadParams();
+      results = loadResults();
+    } catch(e) {
+      console.error('Storage load error:', e);
+    }
+
+    _params  = params;
+    _results = results;
+
+    if (!params || !results) {
+      document.getElementById('noDataState').style.display    = 'flex';
+      document.getElementById('resultsContent').style.display = 'none';
+      var nd = document.getElementById('noDataState');
+      nd.innerHTML += '<p style="font-size:.7rem;color:#8b7aab;margin-top:.5rem">If you just ran the simulation, make sure you are using <strong>http://localhost:8000</strong> and not opening the file directly.</p>';
+      return;
+    }
+
+    document.getElementById('noDataState').style.display    = 'none';
+    document.getElementById('resultsContent').style.display = 'block';
+
+    var meta = document.getElementById('resultsMeta');
+    meta.innerHTML =
+      'Iterations: ' + results.iter + '&nbsp;&nbsp;|&nbsp;&nbsp;' +
+      'Distribution: ' + params.dist + '&nbsp;&nbsp;|&nbsp;&nbsp;' +
+      'T_safe: ' + params.Tsafe + 's';
+
+    document.getElementById('mv-mean').textContent   = results.mean.toFixed(1);
+    document.getElementById('mv-p95').textContent    = results.p95.toFixed(1);
+    document.getElementById('mv-std').textContent    = results.std.toFixed(1);
+    document.getElementById('mv-exceed').textContent = (results.exceed * 100).toFixed(1) + '%';
+
+    var riskEl   = document.getElementById('mv-risk');
+    var riskCard = document.getElementById('mc-risk');
+    riskCard.classList.remove('danger', 'warn', 'safe');
+
+    if (results.exceed > 0.15) {
+      riskEl.innerHTML = '<span class="badge badge-danger">HIGH RISK</span>';
+      riskCard.classList.add('danger');
+      document.getElementById('mc-exceed').classList.add('danger');
+    } else if (results.exceed > 0.05) {
+      riskEl.innerHTML = '<span class="badge badge-warn">MODERATE</span>';
+      riskCard.classList.add('warn');
+      document.getElementById('mc-exceed').classList.add('warn');
+    } else {
+      riskEl.innerHTML = '<span class="badge badge-safe">SAFE</span>';
+      riskCard.classList.add('safe');
+      document.getElementById('mc-exceed').classList.add('safe');
+    }
+
+    buildHistogram(results.results, params.Tsafe);
+    buildCDF(results.results,       params.Tsafe);
+    buildQueueChart(results.avgQ,   params.E);
+    buildSensChart(results.sens);
+    buildSensTable(results.sens);
+    buildParamsGrid(params);
+  });
+</script>
+</body>
+</html>
