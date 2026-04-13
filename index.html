@@ -230,8 +230,6 @@
 
 <div class="page">
   <div class="hero">
-
-    <!-- ── LEFT PANEL ── -->
     <div class="hero-left">
       <div class="eyebrow">Monte Carlo Evacuation Simulation</div>
 
@@ -271,19 +269,16 @@
       <div class="assumptions">
         <div class="assumptions-title">Model Assumptions — <span id="assumptionTypeLabel" style="color:var(--accent)">Office</span></div>
         <div class="assumption-list" id="assumptionList">
-          <!-- populated by JS -->
         </div>
       </div>
     </div>
 
-    <!-- ── RIGHT CONFIG PANEL ── -->
     <div class="config-panel">
       <div class="config-header">
         <h2>Simulation Parameters</h2>
         <p>Select building type, then adjust inputs</p>
       </div>
 
-      <!-- BUILDING TYPE -->
       <div class="card">
         <div class="card-title">Building Type</div>
         <div class="building-type-grid">
@@ -313,7 +308,6 @@
         </div>
       </div>
 
-      <!-- BUILDING ENVIRONMENT -->
       <div class="card">
         <div class="card-title">Building Environment</div>
 
@@ -354,7 +348,6 @@
         </div>
       </div>
 
-      <!-- REACTION TIME -->
       <div class="card">
         <div class="card-title">Reaction Time Distribution</div>
 
@@ -389,7 +382,6 @@
         </div>
       </div>
 
-      <!-- SIMULATION SETTINGS -->
       <div class="card">
         <div class="card-title">Simulation Settings</div>
 
@@ -421,7 +413,6 @@
         </div>
       </div>
 
-      <!-- FLOOR PLAN PREVIEW -->
       <div class="floor-preview-wrap">
         <div class="floor-preview-label">
           <span>Floor Plan Preview</span>
@@ -430,7 +421,6 @@
         <canvas id="floorCanvas"></canvas>
       </div>
 
-      <!-- RUN -->
       <div class="run-section">
         <div class="progress-bar-wrap" id="progressWrap">
           <div class="progress-bar-fill" id="progressFill"></div>
@@ -446,7 +436,6 @@
 <script src="simulation.js"></script>
 <script>
 
-  // ── ASSUMPTIONS PER BUILDING TYPE ──
   var ASSUMPTIONS = {
     office: [
       'Staff know all exit locations — balanced round-robin exit assignment',
@@ -491,20 +480,13 @@
 
   var currentType = 'office';
 
-  // ── BUILDING TYPE SELECTION ──
   function selectBuildingType(type) {
     currentType = type;
-
-    // update button states
     var btns = document.querySelectorAll('.btype-btn');
     for (var i = 0; i < btns.length; i++) {
       btns[i].classList.toggle('active', btns[i].dataset.type === type);
     }
-
-    // update description box
     document.getElementById('btypeDesc').textContent = BTYPE_DESCS[type];
-
-    // load preset values into sliders
     var p = BUILDING_PRESETS[type];
     setSlider('s-occ',   p.N);
     setSlider('s-exits', p.E);
@@ -515,14 +497,9 @@
     setSlider('s-speed', p.v);
     setSlider('s-safe',  p.Tsafe);
     document.getElementById('s-dist').value = p.dist;
-
-    // update assumption list
     updateAssumptions(type);
-
-    // update floor plan badge
     document.getElementById('floorTypeBadge').textContent = p.label.toUpperCase();
     document.getElementById('assumptionTypeLabel').textContent = p.label;
-
     drawFloor();
   }
 
@@ -544,7 +521,6 @@
     list.innerHTML = html;
   }
 
-  // ── SLIDER SYNC ──
   var sliderMap = [
     { sl: 's-occ',   vl: 'v-occ'   },
     { sl: 's-exits', vl: 'v-exits' },
@@ -568,7 +544,6 @@
     }
   });
 
-  // ── FLOOR PLAN CANVAS ──
   function drawFloor() {
     var canvas = document.getElementById('floorCanvas');
     if (!canvas) return;
@@ -580,10 +555,9 @@
 
     ctx.clearRect(0, 0, W, H);
 
-    // background colour varies by building type
-    var bgColors = { office: '#f5f3ff', school: '#f0f9ff', mall: '#fff7ed', hospital: '#f0fdf4' };
+    var bgColors    = { office: '#f5f3ff', school: '#f0f9ff', mall: '#fff7ed', hospital: '#f0fdf4' };
     var accentColors = { office: 'rgba(124,58,237,', school: 'rgba(14,165,233,', mall: 'rgba(249,115,22,', hospital: 'rgba(16,185,129,' };
-    var hexAccent = { office: '#a855f7', school: '#0ea5e9', mall: '#f97316', hospital: '#10b981' };
+    var hexAccent   = { office: '#a855f7', school: '#0ea5e9', mall: '#f97316', hospital: '#10b981' };
 
     ctx.fillStyle = bgColors[type] || '#f5f3ff';
     ctx.fillRect(0, 0, W, H);
@@ -599,14 +573,11 @@
     var pad = 18;
     var ha  = hexAccent[type] || '#a855f7';
 
-    // outer building walls
     ctx.strokeStyle = ac + '0.6)';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(pad, pad, W - pad*2, H - pad*2);
 
-    // building-type interior details
     if (type === 'school') {
-      // draw classroom dividers
       ctx.strokeStyle = ac + '0.15)';
       ctx.lineWidth = 1;
       var roomW = (W - pad*2) / 4;
@@ -616,7 +587,6 @@
         ctx.lineTo(pad + r * roomW, H - pad);
         ctx.stroke();
       }
-      // classroom labels
       ctx.fillStyle = ac + '0.4)';
       ctx.font = '7px IBM Plex Mono, monospace';
       ctx.textAlign = 'center';
@@ -624,7 +594,6 @@
         ctx.fillText('CL' + (rc+1), pad + rc * roomW + roomW/2, H/2 + 3);
       }
     } else if (type === 'mall') {
-      // draw store blocks
       ctx.strokeStyle = ac + '0.12)';
       ctx.lineWidth = 1;
       ctx.strokeRect(pad+8, pad+8, (W-pad*2)*0.4, (H-pad*2)*0.45);
@@ -635,7 +604,6 @@
       ctx.fillRect(pad+8, H/2+2, (W-pad*2)*0.4, (H-pad*2)*0.4);
       ctx.fillRect(W/2+4, pad+8, (W-pad*2)*0.38, (H-pad*2)*0.85);
     } else if (type === 'hospital') {
-      // draw ward dividers
       ctx.strokeStyle = ac + '0.15)';
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(W/2, pad); ctx.lineTo(W/2, H-pad); ctx.stroke();
@@ -646,7 +614,6 @@
       ctx.fillRect(W/2+1, H/2+1, W/2-pad-1, H/2-pad-1);
     }
 
-    // exits
     var exitDefs = [
       { x: W*0.35, y: pad,    side: 'top'    },
       { x: W*0.65, y: H-pad,  side: 'bottom' },
@@ -680,7 +647,6 @@
         ctx.fillRect(ex - 1, ey + gw/2 - 3, 3, 3);
       }
 
-      // highlight exit 0 (main entrance) for mall in orange
       if (type === 'mall' && e === 0) {
         ctx.fillStyle = '#f97316';
         ctx.font = 'bold 8px IBM Plex Mono, monospace';
@@ -694,7 +660,6 @@
       ctx.fillText(e === 0 && type === 'mall' ? 'MAIN' : 'E'+(e+1), lx, ly);
     }
 
-    // occupant dots
     var maxDots = Math.min(N, 100);
     ctx.fillStyle = ac + '0.35)';
     for (var i = 0; i < maxDots; i++) {
@@ -718,7 +683,6 @@
     ctx.fillText('N=' + N + '  E=' + E, pad + 4, pad + 12);
   }
 
-  // ── PARAMS ──
   function getParams() {
     return {
       buildingType: currentType,
@@ -743,7 +707,6 @@
 
   function clearLog() { document.getElementById('logBox').innerHTML = ''; }
 
-  // ── RUN ──
   function handleRun() {
     var btn = document.getElementById('runBtn');
     btn.disabled = true;
@@ -816,7 +779,6 @@
     }, 40);
   }
 
-  // ── INIT ──
   window.addEventListener('load', function() {
     selectBuildingType('office');
     window.addEventListener('resize', drawFloor);

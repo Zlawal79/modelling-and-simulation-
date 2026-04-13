@@ -24,7 +24,6 @@ function generatePDFReport(params, results) {
   var btype        = params.buildingType || 'office';
   var btypeLabel   = BTYPE_LABELS[btype] || btype;
 
-  // Building-type behaviour descriptions for the intro paragraph
   var BTYPE_BEHAVIOUR = {
     office:   'Staff (~30%) first attempt elevators before evacuating, adding 15–25 s delay per person. Exit assignment is balanced round-robin. Sensitivity ranges are calibrated to office occupancy levels (100–400 persons).',
     school:   'Teachers gather their class (~25 students) before moving, adding 10–30 s on top of reaction time. Each classroom is assigned a designated drill exit (not the nearest exit), causing unbalanced exit loads. Students walk at reduced speed (~0.8 m/s) behind their teacher. Sensitivity ranges reflect school-sized populations (100–500 persons).',
@@ -220,7 +219,6 @@ function generatePDFReport(params, results) {
     return yPos + rowH;
   }
 
-  // ── PAGE 1 ──
   drawPageBg();
   y = 0;
 
@@ -234,7 +232,6 @@ function generatePDFReport(params, results) {
   font(18, 'bold');
   textCol(C.white);
   doc.text('SIMULATION REPORT', ml, 22);
-  // Building type badge
   font(8, 'bold');
   textCol(C.accent);
   doc.text('BUILDING TYPE: ' + btypeLabel.toUpperCase(), ml, 31);
@@ -323,7 +320,6 @@ function generatePDFReport(params, results) {
   }
   y += 4;
 
-  // ── PAGE 2 ──
   newPage();
 
   y = sectionBar('Evacuation Time Distribution', y);
@@ -401,7 +397,6 @@ function generatePDFReport(params, results) {
     y += 7;
   }
 
-  // ── PAGE 3 ──
   newPage();
 
   y = sectionBar('Sensitivity Analysis', y);
@@ -514,7 +509,6 @@ function generatePDFReport(params, results) {
     if (fi % 2 === 1 || fi === findings.length - 1) y = nextY;
   }
 
-  // ── FOOTERS ──
   var totalPages = doc.internal.getNumberOfPages();
   for (var pg = 1; pg <= totalPages; pg++) {
     doc.setPage(pg);
