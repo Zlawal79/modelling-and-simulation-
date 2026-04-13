@@ -12,7 +12,6 @@
       grid-template-columns: 1fr 520px;
       gap: 0;
     }
-
     .hero-left {
       padding: 5rem 4rem 3rem 4rem;
       display: flex;
@@ -22,18 +21,14 @@
       position: relative;
       overflow: hidden;
     }
-
     .hero-left::before {
       content: '';
       position: absolute;
-      top: -100px;
-      right: -100px;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(0,212,170,.06) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,.06) 0%, transparent 70%);
       pointer-events: none;
     }
-
     .eyebrow {
       font-family: var(--mono);
       font-size: .62rem;
@@ -45,15 +40,12 @@
       align-items: center;
       gap: .6rem;
     }
-
     .eyebrow::before {
       content: '';
       display: block;
-      width: 28px;
-      height: 1px;
+      width: 28px; height: 1px;
       background: var(--accent);
     }
-
     h1.hero-title {
       font-family: var(--head);
       font-weight: 700;
@@ -64,13 +56,11 @@
       color: var(--text);
       margin-bottom: 1.6rem;
     }
-
     h1.hero-title em {
       font-style: normal;
       color: var(--accent);
       display: block;
     }
-
     .hero-desc {
       font-size: .9rem;
       color: var(--muted2);
@@ -79,18 +69,12 @@
       margin-bottom: 2.5rem;
       font-weight: 300;
     }
-
-    .hero-desc strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
+    .hero-desc strong { color: var(--text); font-weight: 500; }
     .stats-row {
       display: flex;
       gap: 2.5rem;
       margin-bottom: 2.5rem;
     }
-
     .stat-num {
       font-family: var(--head);
       font-size: 1.8rem;
@@ -98,7 +82,6 @@
       color: var(--accent);
       line-height: 1;
     }
-
     .stat-lbl {
       font-family: var(--mono);
       font-size: .6rem;
@@ -107,20 +90,17 @@
       color: var(--muted);
       margin-top: .2rem;
     }
-
     .hero-actions {
       display: flex;
       gap: .8rem;
       align-items: center;
       flex-wrap: wrap;
     }
-
     .assumptions {
       margin-top: 3rem;
       padding-top: 2rem;
       border-top: 1px solid var(--border);
     }
-
     .assumptions-title {
       font-family: var(--mono);
       font-size: .65rem;
@@ -129,13 +109,11 @@
       color: var(--muted2);
       margin-bottom: 1rem;
     }
-
     .assumption-list {
       display: flex;
       flex-direction: column;
       gap: .5rem;
     }
-
     .assumption-item {
       display: flex;
       align-items: flex-start;
@@ -145,7 +123,6 @@
       font-weight: 300;
       line-height: 1.5;
     }
-
     .assumption-item::before {
       content: '//';
       font-family: var(--mono);
@@ -155,7 +132,6 @@
       flex-shrink: 0;
       margin-top: .1rem;
     }
-
     .config-panel {
       background: var(--surface);
       padding: 2rem 1.8rem;
@@ -165,16 +141,13 @@
       flex-direction: column;
       gap: 1.2rem;
     }
-
     .config-panel::-webkit-scrollbar { width: 4px; }
     .config-panel::-webkit-scrollbar-track { background: transparent; }
     .config-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
     .config-header {
       padding-bottom: .8rem;
       border-bottom: 1px solid var(--border);
     }
-
     .config-header h2 {
       font-family: var(--head);
       font-weight: 700;
@@ -183,26 +156,18 @@
       text-transform: uppercase;
       color: var(--text);
     }
-
     .config-header p {
       font-size: .72rem;
       color: var(--muted);
       margin-top: .3rem;
       font-family: var(--mono);
     }
-
     .run-section {
       display: flex;
       flex-direction: column;
       gap: .8rem;
     }
-
-    .run-btn-full {
-      width: 100%;
-      padding: .9rem;
-      font-size: 1rem;
-    }
-
+    .run-btn-full { width: 100%; padding: .9rem; font-size: 1rem; }
     .progress-bar-wrap {
       height: 3px;
       background: var(--border);
@@ -210,7 +175,6 @@
       overflow: hidden;
       display: none;
     }
-
     .progress-bar-fill {
       height: 100%;
       background: var(--accent);
@@ -218,13 +182,11 @@
       width: 0%;
       transition: width .1s linear;
     }
-
     .floor-preview-wrap {
       border: 1px solid var(--border);
       border-radius: 6px;
       overflow: hidden;
     }
-
     .floor-preview-label {
       font-family: var(--mono);
       font-size: .58rem;
@@ -234,21 +196,25 @@
       padding: .5rem .8rem;
       border-bottom: 1px solid var(--border);
       background: var(--card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
+    .floor-type-badge {
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(124,58,237,.1);
+      border: 1px solid rgba(124,58,237,.25);
+      border-radius: 3px;
+      padding: .1rem .4rem;
+    }
     @media (max-width: 960px) {
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-      .hero-left {
-        padding: 3rem 2rem 2rem;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-      .config-panel {
-        max-height: none;
-      }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 3rem 2rem 2rem; border-right: none; border-bottom: 1px solid var(--border); }
+      .config-panel { max-height: none; }
     }
   </style>
 </head>
@@ -265,6 +231,7 @@
 <div class="page">
   <div class="hero">
 
+    <!-- ── LEFT PANEL ── -->
     <div class="hero-left">
       <div class="eyebrow">Monte Carlo Evacuation Simulation</div>
 
@@ -276,9 +243,9 @@
 
       <p class="hero-desc">
         Traditional evacuation models assume a <strong>single fixed reaction time</strong> for all occupants.
-        This simulator treats reaction time as a <strong>random variable</strong> sampled from a
-        log-normal distribution — running 1,000+ independent Monte Carlo trials to
-        produce a full probability distribution of evacuation outcomes.
+        This simulator treats reaction time as a <strong>random variable</strong> and models
+        <strong>building-type-specific behaviour</strong> — running 1,000+ independent Monte Carlo trials
+        to produce a full probability distribution of evacuation outcomes.
       </p>
 
       <div class="stats-row">
@@ -287,8 +254,8 @@
           <div class="stat-lbl">MC Trials</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">5</div>
-          <div class="stat-lbl">Parameters</div>
+          <div class="stat-num">4</div>
+          <div class="stat-lbl">Building Types</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">6</div>
@@ -297,32 +264,56 @@
       </div>
 
       <div class="hero-actions">
-        <button class="btn run-btn-hero" onclick="handleRun()">
-          Run Simulation
-        </button>
-        <a href="results.html" class="btn secondary" id="viewResultsBtn">
-          View Last Results
-        </a>
+        <button class="btn run-btn-hero" onclick="handleRun()">Run Simulation</button>
+        <a href="results.html" class="btn secondary" id="viewResultsBtn">View Last Results</a>
       </div>
 
       <div class="assumptions">
-        <div class="assumptions-title">Model Assumptions</div>
-        <div class="assumption-list">
-          <div class="assumption-item">All occupants know exit locations and walk directly to the nearest exit</div>
-          <div class="assumption-item">Walking speed is constant and fixed per simulation run</div>
-          <div class="assumption-item">Reaction time is the only per-trial source of randomness (log-normal default)</div>
-          <div class="assumption-item">Exit throughput follows a FIFO queue with capacity C<sub>e</sub> persons/second</div>
-          <div class="assumption-item">Panic, cooperation, and herding behaviours are not explicitly modelled</div>
+        <div class="assumptions-title">Model Assumptions — <span id="assumptionTypeLabel" style="color:var(--accent)">Office</span></div>
+        <div class="assumption-list" id="assumptionList">
+          <!-- populated by JS -->
         </div>
       </div>
     </div>
 
+    <!-- ── RIGHT CONFIG PANEL ── -->
     <div class="config-panel">
       <div class="config-header">
         <h2>Simulation Parameters</h2>
-        <p>Adjust inputs then run simulation</p>
+        <p>Select building type, then adjust inputs</p>
       </div>
 
+      <!-- BUILDING TYPE -->
+      <div class="card">
+        <div class="card-title">Building Type</div>
+        <div class="building-type-grid">
+          <button class="btype-btn active" data-type="office" onclick="selectBuildingType('office')">
+            <span class="btype-icon"></span>
+            <span class="btype-name">Office</span>
+            <span class="btype-tag">Staff familiar with exits<br>Elevator-attempt delay</span>
+          </button>
+          <button class="btype-btn" data-type="school" onclick="selectBuildingType('school')">
+            <span class="btype-icon"></span>
+            <span class="btype-name">School</span>
+            <span class="btype-tag">Teacher gathers class first<br>Drill exit assignment</span>
+          </button>
+          <button class="btype-btn" data-type="mall" onclick="selectBuildingType('mall')">
+            <span class="btype-icon"></span>
+            <span class="btype-name">Mall</span>
+            <span class="btype-tag">Visitors head to entrance<br>High exit load imbalance</span>
+          </button>
+          <button class="btype-btn" data-type="hospital" onclick="selectBuildingType('hospital')">
+            <span class="btype-icon"></span>
+            <span class="btype-name">Hospital</span>
+            <span class="btype-tag">3 population tiers<br>Non-ambulatory patients</span>
+          </button>
+        </div>
+        <div class="btype-desc-box" id="btypeDesc">
+          Staff know exits well. ~30% attempt elevators first, adding 15–25 s delay. Exit load is balanced. Sensitivity ranges calibrated to office occupancy levels.
+        </div>
+      </div>
+
+      <!-- BUILDING ENVIRONMENT -->
       <div class="card">
         <div class="card-title">Building Environment</div>
 
@@ -331,8 +322,8 @@
             <span class="param-name">Occupants (N) <sub>persons</sub></span>
             <span class="param-val" id="v-occ">200</span>
           </div>
-          <input type="range" id="s-occ" min="100" max="500" step="10" value="200" />
-          <div class="param-desc">Range: 100 – 500 persons</div>
+          <input type="range" id="s-occ" min="50" max="1000" step="10" value="200" />
+          <div class="param-desc" id="d-occ">Range: 50 – 1,000 persons</div>
         </div>
 
         <div class="param-block">
@@ -340,8 +331,8 @@
             <span class="param-name">Exits (E)</span>
             <span class="param-val" id="v-exits">3</span>
           </div>
-          <input type="range" id="s-exits" min="2" max="4" step="1" value="3" />
-          <div class="param-desc">Range: 2 – 4 exits</div>
+          <input type="range" id="s-exits" min="2" max="6" step="1" value="3" />
+          <div class="param-desc">Range: 2 – 6 exits</div>
         </div>
 
         <div class="param-block">
@@ -349,8 +340,8 @@
             <span class="param-name">Exit Capacity C<sub>e</sub> <sub>p/s</sub></span>
             <span class="param-val" id="v-cap">1.2</span>
           </div>
-          <input type="range" id="s-cap" min="1.0" max="1.5" step="0.1" value="1.2" />
-          <div class="param-desc">Throughput per exit: 1.0 – 1.5 persons/second</div>
+          <input type="range" id="s-cap" min="0.4" max="1.6" step="0.1" value="1.2" />
+          <div class="param-desc" id="d-cap">Throughput per exit: 0.4 – 1.6 p/s</div>
         </div>
 
         <div class="param-block">
@@ -358,30 +349,31 @@
             <span class="param-name">Path Length (L) <sub>metres</sub></span>
             <span class="param-val" id="v-path">30</span>
           </div>
-          <input type="range" id="s-path" min="10" max="50" step="5" value="30" />
-          <div class="param-desc">Distance to nearest exit: 10 – 50 m</div>
+          <input type="range" id="s-path" min="10" max="80" step="5" value="30" />
+          <div class="param-desc">Distance to exit: 10 – 80 m</div>
         </div>
       </div>
 
+      <!-- REACTION TIME -->
       <div class="card">
         <div class="card-title">Reaction Time Distribution</div>
 
         <div class="param-block">
           <div class="param-header">
             <span class="param-name">Mean &mu;<sub>r</sub> <sub>seconds</sub></span>
-            <span class="param-val" id="v-mu">20</span>
+            <span class="param-val" id="v-mu">22</span>
           </div>
-          <input type="range" id="s-mu" min="15" max="30" step="1" value="20" />
-          <div class="param-desc">Average pre-movement delay: 15 – 30 s</div>
+          <input type="range" id="s-mu" min="5" max="120" step="1" value="22" />
+          <div class="param-desc" id="d-mu">Average pre-movement delay</div>
         </div>
 
         <div class="param-block">
           <div class="param-header">
             <span class="param-name">Std Dev &sigma;<sub>r</sub> <sub>seconds</sub></span>
-            <span class="param-val" id="v-sigma">8</span>
+            <span class="param-val" id="v-sigma">7</span>
           </div>
-          <input type="range" id="s-sigma" min="5" max="15" step="1" value="8" />
-          <div class="param-desc">Variability in reaction time: 5 – 15 s</div>
+          <input type="range" id="s-sigma" min="2" max="50" step="1" value="7" />
+          <div class="param-desc" id="d-sigma">Variability in reaction time</div>
         </div>
 
         <div class="param-block">
@@ -393,10 +385,11 @@
             <option value="normal">Normal (symmetric)</option>
             <option value="uniform">Uniform (equal probability)</option>
           </select>
-          <div class="param-desc" style="margin-top:.4rem">Log-normal is recommended per literature</div>
+          <div class="param-desc" style="margin-top:.4rem">Log-normal is recommended per SFPE literature</div>
         </div>
       </div>
 
+      <!-- SIMULATION SETTINGS -->
       <div class="card">
         <div class="card-title">Simulation Settings</div>
 
@@ -414,8 +407,8 @@
             <span class="param-name">Walking Speed (v) <sub>m/s</sub></span>
             <span class="param-val" id="v-speed">1.2</span>
           </div>
-          <input type="range" id="s-speed" min="1.0" max="1.4" step="0.1" value="1.2" />
-          <div class="param-desc">Fixed per run: 1.0 – 1.4 m/s</div>
+          <input type="range" id="s-speed" min="0.3" max="1.5" step="0.1" value="1.2" />
+          <div class="param-desc" id="d-speed">Base walking speed: 0.3 – 1.5 m/s</div>
         </div>
 
         <div class="param-block">
@@ -423,33 +416,135 @@
             <span class="param-name">Safety Limit T<sub>safe</sub> <sub>seconds</sub></span>
             <span class="param-val" id="v-safe">180</span>
           </div>
-          <input type="range" id="s-safe" min="120" max="300" step="30" value="180" />
-          <div class="param-desc">NFPA 101 threshold: 120 – 300 s</div>
+          <input type="range" id="s-safe" min="120" max="600" step="30" value="180" />
+          <div class="param-desc" id="d-safe">NFPA 101 threshold (hospitals use 360 s+)</div>
         </div>
       </div>
 
+      <!-- FLOOR PLAN PREVIEW -->
       <div class="floor-preview-wrap">
-        <div class="floor-preview-label">Floor Plan Preview</div>
+        <div class="floor-preview-label">
+          <span>Floor Plan Preview</span>
+          <span class="floor-type-badge" id="floorTypeBadge">OFFICE</span>
+        </div>
         <canvas id="floorCanvas"></canvas>
       </div>
 
+      <!-- RUN -->
       <div class="run-section">
         <div class="progress-bar-wrap" id="progressWrap">
           <div class="progress-bar-fill" id="progressFill"></div>
         </div>
-        <button class="btn run-btn-full" id="runBtn" onclick="handleRun()">
-          Run Simulation
-        </button>
+        <button class="btn run-btn-full" id="runBtn" onclick="handleRun()">Run Simulation</button>
         <div class="log-box" id="logBox">Awaiting simulation run...</div>
       </div>
 
     </div>
-
   </div>
 </div>
 
 <script src="simulation.js"></script>
 <script>
+
+  // ── ASSUMPTIONS PER BUILDING TYPE ──
+  var ASSUMPTIONS = {
+    office: [
+      'Staff know all exit locations — balanced round-robin exit assignment',
+      '~30% of occupants attempt elevators first, adding 15–25 s to reaction time',
+      'Walking speed is constant at v m/s (office corridors, unobstructed)',
+      'Each person gets their own reaction time sampled from the chosen distribution',
+      'Exit throughput follows a FIFO queue with capacity C\u2091 persons/second'
+    ],
+    school: [
+      'Teachers react first and must gather their class (~25 students) before moving',
+      'Gathering adds 10–30 s on top of the teacher\'s reaction time',
+      'Each classroom is assigned a designated drill exit — not the nearest exit',
+      'Students walk in groups behind their teacher at reduced speed (0.8 m/s)',
+      'Exit load is unbalanced: all students from one class use one door',
+      'Exit throughput follows a FIFO queue — grouped arrivals create longer queues'
+    ],
+    mall: [
+      '~75% of visitors head to the main entrance (exit 1) — not the nearest exit',
+      'High exit load imbalance: emergency exits are largely unused',
+      '~45% of shoppers delay 5–20 s to grab belongings before evacuating',
+      'Crowd density slows effective walking speed by 10–15%',
+      'High sigma reflects wide variability: some visitors know the mall, most do not',
+      'Exit throughput follows a FIFO queue — main entrance becomes a severe bottleneck'
+    ],
+    hospital: [
+      '3 population tiers: staff (30%), ambulatory patients (45%), non-ambulatory (25%)',
+      'Staff react fast (mu ~15 s) and know all exits',
+      'Ambulatory patients react slowly (mu ~45 s) and walk at 50–90% of base speed',
+      'Non-ambulatory patients require staff assistance — effective reaction time ~90 s',
+      'Non-ambulatory patients move at 0.3–0.5 m/s (wheelchair / stretcher speed)',
+      'Exit capacity reduced by 25% due to wheelchairs and stretchers narrowing flow',
+      'Defend-in-place protocol: T_safe is set higher (360 s+) per hospital guidelines'
+    ]
+  };
+
+  var BTYPE_DESCS = {
+    office:   'Staff know exits well. ~30% attempt elevators first, adding 15–25 s delay. Exit load is balanced. Sensitivity ranges calibrated to office occupancy levels.',
+    school:   'Teachers gather classes before moving. Groups assigned to drill exits — not nearest exits. Slower walking speed for children. Sensitivity ranges reflect school-sized populations.',
+    mall:     '75% of visitors head to the main entrance regardless of proximity. High exit imbalance. Visitors may stop for belongings. Sensitivity ranges cover large occupancies.',
+    hospital: 'Three population tiers: fast-reacting staff, slow ambulatory patients, and non-ambulatory patients requiring assisted evacuation. Reduced exit capacity. Extended T_safe.'
+  };
+
+  var currentType = 'office';
+
+  // ── BUILDING TYPE SELECTION ──
+  function selectBuildingType(type) {
+    currentType = type;
+
+    // update button states
+    var btns = document.querySelectorAll('.btype-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].dataset.type === type);
+    }
+
+    // update description box
+    document.getElementById('btypeDesc').textContent = BTYPE_DESCS[type];
+
+    // load preset values into sliders
+    var p = BUILDING_PRESETS[type];
+    setSlider('s-occ',   p.N);
+    setSlider('s-exits', p.E);
+    setSlider('s-cap',   p.cap);
+    setSlider('s-path',  p.L);
+    setSlider('s-mu',    p.mu);
+    setSlider('s-sigma', p.sigma);
+    setSlider('s-speed', p.v);
+    setSlider('s-safe',  p.Tsafe);
+    document.getElementById('s-dist').value = p.dist;
+
+    // update assumption list
+    updateAssumptions(type);
+
+    // update floor plan badge
+    document.getElementById('floorTypeBadge').textContent = p.label.toUpperCase();
+    document.getElementById('assumptionTypeLabel').textContent = p.label;
+
+    drawFloor();
+  }
+
+  function setSlider(id, val) {
+    var sl = document.getElementById(id);
+    var vl = document.getElementById('v-' + id.replace('s-', ''));
+    if (!sl) return;
+    sl.value = val;
+    if (vl) vl.textContent = val;
+  }
+
+  function updateAssumptions(type) {
+    var list = document.getElementById('assumptionList');
+    var items = ASSUMPTIONS[type] || ASSUMPTIONS.office;
+    var html = '';
+    for (var i = 0; i < items.length; i++) {
+      html += '<div class="assumption-item">' + items[i] + '</div>';
+    }
+    list.innerHTML = html;
+  }
+
+  // ── SLIDER SYNC ──
   var sliderMap = [
     { sl: 's-occ',   vl: 'v-occ'   },
     { sl: 's-exits', vl: 'v-exits' },
@@ -473,6 +568,7 @@
     }
   });
 
+  // ── FLOOR PLAN CANVAS ──
   function drawFloor() {
     var canvas = document.getElementById('floorCanvas');
     if (!canvas) return;
@@ -480,92 +576,152 @@
     canvas.width  = canvas.offsetWidth || 460;
     canvas.height = 200;
     var W = canvas.width, H = canvas.height;
+    var type = currentType;
 
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#f5f3ff';
+
+    // background colour varies by building type
+    var bgColors = { office: '#f5f3ff', school: '#f0f9ff', mall: '#fff7ed', hospital: '#f0fdf4' };
+    var accentColors = { office: 'rgba(124,58,237,', school: 'rgba(14,165,233,', mall: 'rgba(249,115,22,', hospital: 'rgba(16,185,129,' };
+    var hexAccent = { office: '#a855f7', school: '#0ea5e9', mall: '#f97316', hospital: '#10b981' };
+
+    ctx.fillStyle = bgColors[type] || '#f5f3ff';
     ctx.fillRect(0, 0, W, H);
 
-    ctx.strokeStyle = 'rgba(124,58,237,0.08)';
+    var ac = accentColors[type] || 'rgba(124,58,237,';
+    ctx.strokeStyle = ac + '0.08)';
     ctx.lineWidth = 1;
-    for (var x = 0; x < W; x += 20) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-    }
-    for (var y = 0; y < H; y += 20) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-    }
+    for (var x = 0; x < W; x += 20) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (var y = 0; y < H; y += 20) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
     var N   = parseInt(document.getElementById('s-occ').value);
     var E   = parseInt(document.getElementById('s-exits').value);
     var pad = 18;
+    var ha  = hexAccent[type] || '#a855f7';
 
-    ctx.strokeStyle = 'rgba(124,58,237,0.6)';
+    // outer building walls
+    ctx.strokeStyle = ac + '0.6)';
     ctx.lineWidth = 1.5;
-    ctx.strokeRect(pad, pad, W - pad * 2, H - pad * 2);
+    ctx.strokeRect(pad, pad, W - pad*2, H - pad*2);
 
+    // building-type interior details
+    if (type === 'school') {
+      // draw classroom dividers
+      ctx.strokeStyle = ac + '0.15)';
+      ctx.lineWidth = 1;
+      var roomW = (W - pad*2) / 4;
+      for (var r = 1; r < 4; r++) {
+        ctx.beginPath();
+        ctx.moveTo(pad + r * roomW, pad);
+        ctx.lineTo(pad + r * roomW, H - pad);
+        ctx.stroke();
+      }
+      // classroom labels
+      ctx.fillStyle = ac + '0.4)';
+      ctx.font = '7px IBM Plex Mono, monospace';
+      ctx.textAlign = 'center';
+      for (var rc = 0; rc < 4; rc++) {
+        ctx.fillText('CL' + (rc+1), pad + rc * roomW + roomW/2, H/2 + 3);
+      }
+    } else if (type === 'mall') {
+      // draw store blocks
+      ctx.strokeStyle = ac + '0.12)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(pad+8, pad+8, (W-pad*2)*0.4, (H-pad*2)*0.45);
+      ctx.strokeRect(pad+8, H/2+2, (W-pad*2)*0.4, (H-pad*2)*0.4);
+      ctx.strokeRect(W/2+4, pad+8, (W-pad*2)*0.38, (H-pad*2)*0.85);
+      ctx.fillStyle = ac + '0.08)';
+      ctx.fillRect(pad+8, pad+8, (W-pad*2)*0.4, (H-pad*2)*0.45);
+      ctx.fillRect(pad+8, H/2+2, (W-pad*2)*0.4, (H-pad*2)*0.4);
+      ctx.fillRect(W/2+4, pad+8, (W-pad*2)*0.38, (H-pad*2)*0.85);
+    } else if (type === 'hospital') {
+      // draw ward dividers
+      ctx.strokeStyle = ac + '0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(W/2, pad); ctx.lineTo(W/2, H-pad); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad, H/2); ctx.lineTo(W-pad, H/2); ctx.stroke();
+      ctx.fillStyle = ac + '0.06)';
+      ctx.fillRect(pad+1, pad+1, W/2-pad-1, H/2-pad-1);
+      ctx.fillStyle = ac + '0.10)';
+      ctx.fillRect(W/2+1, H/2+1, W/2-pad-1, H/2-pad-1);
+    }
+
+    // exits
     var exitDefs = [
-      { x: W * 0.35, y: pad,     side: 'top'    },
-      { x: W * 0.65, y: H - pad, side: 'bottom' },
-      { x: pad,      y: H * 0.5, side: 'left'   },
-      { x: W - pad,  y: H * 0.5, side: 'right'  }
+      { x: W*0.35, y: pad,    side: 'top'    },
+      { x: W*0.65, y: H-pad,  side: 'bottom' },
+      { x: pad,    y: H*0.5,  side: 'left'   },
+      { x: W-pad,  y: H*0.5,  side: 'right'  },
+      { x: W*0.65, y: pad,    side: 'top'    },
+      { x: W*0.35, y: H-pad,  side: 'bottom' }
     ];
 
     for (var e = 0; e < E; e++) {
-      var ex   = exitDefs[e % 4].x;
-      var ey   = exitDefs[e % 4].y;
-      var side = exitDefs[e % 4].side;
+      var ex   = exitDefs[e % exitDefs.length].x;
+      var ey   = exitDefs[e % exitDefs.length].y;
+      var side = exitDefs[e % exitDefs.length].side;
       var gw   = 22;
 
-      ctx.fillStyle = '#f5f3ff';
+      ctx.fillStyle = bgColors[type] || '#f5f3ff';
       if (side === 'top' || side === 'bottom') {
-        ctx.fillRect(ex - gw / 2, ey - 2, gw, 5);
+        ctx.fillRect(ex - gw/2, ey - 2, gw, 5);
       } else {
-        ctx.fillRect(ex - 2, ey - gw / 2, 5, gw);
+        ctx.fillRect(ex - 2, ey - gw/2, 5, gw);
       }
 
-      ctx.fillStyle  = '#a855f7';
-      ctx.strokeStyle = '#a855f7';
+      ctx.fillStyle  = ha;
+      ctx.strokeStyle = ha;
       ctx.lineWidth  = 2;
       if (side === 'top' || side === 'bottom') {
-        ctx.fillRect(ex - gw / 2, ey - 1, 3, 3);
-        ctx.fillRect(ex + gw / 2 - 3, ey - 1, 3, 3);
+        ctx.fillRect(ex - gw/2, ey - 1, 3, 3);
+        ctx.fillRect(ex + gw/2 - 3, ey - 1, 3, 3);
       } else {
-        ctx.fillRect(ex - 1, ey - gw / 2, 3, 3);
-        ctx.fillRect(ex - 1, ey + gw / 2 - 3, 3, 3);
+        ctx.fillRect(ex - 1, ey - gw/2, 3, 3);
+        ctx.fillRect(ex - 1, ey + gw/2 - 3, 3, 3);
       }
 
-      ctx.fillStyle = '#a855f7';
-      ctx.font = '500 8px IBM Plex Mono, monospace';
+      // highlight exit 0 (main entrance) for mall in orange
+      if (type === 'mall' && e === 0) {
+        ctx.fillStyle = '#f97316';
+        ctx.font = 'bold 8px IBM Plex Mono, monospace';
+      } else {
+        ctx.fillStyle = ha;
+        ctx.font = '500 8px IBM Plex Mono, monospace';
+      }
       ctx.textAlign = 'center';
-      var lx = side === 'left' ? ex - 14 : side === 'right' ? ex + 14 : ex;
-      var ly = side === 'top'  ? ey - 7  : side === 'bottom' ? ey + 13 : ey + 4;
-      ctx.fillText('E' + (e + 1), lx, ly);
+      var lx = side === 'left' ? ex-14 : side === 'right' ? ex+14 : ex;
+      var ly = side === 'top'  ? ey-7  : side === 'bottom' ? ey+13 : ey+4;
+      ctx.fillText(e === 0 && type === 'mall' ? 'MAIN' : 'E'+(e+1), lx, ly);
     }
 
+    // occupant dots
     var maxDots = Math.min(N, 100);
-    ctx.fillStyle = 'rgba(124,58,237,0.35)';
+    ctx.fillStyle = ac + '0.35)';
     for (var i = 0; i < maxDots; i++) {
-      var dx = pad + 8 + Math.random() * (W - pad * 2 - 16);
-      var dy = pad + 8 + Math.random() * (H - pad * 2 - 16);
+      var dx = pad + 8 + Math.random() * (W - pad*2 - 16);
+      var dy = pad + 8 + Math.random() * (H - pad*2 - 16);
       ctx.beginPath();
       ctx.arc(dx, dy, 1.8, 0, Math.PI * 2);
       ctx.fill();
     }
 
     if (N > maxDots) {
-      ctx.fillStyle = 'rgba(107,92,138,0.8)';
+      ctx.fillStyle = ac + '0.8)';
       ctx.font = '8px IBM Plex Mono, monospace';
       ctx.textAlign = 'right';
       ctx.fillText('+' + (N - maxDots) + ' more', W - pad - 4, H - pad - 5);
     }
 
-    ctx.fillStyle = 'rgba(107,92,138,0.7)';
+    ctx.fillStyle = ac + '0.7)';
     ctx.font = '8px IBM Plex Mono, monospace';
     ctx.textAlign = 'left';
     ctx.fillText('N=' + N + '  E=' + E, pad + 4, pad + 12);
   }
 
+  // ── PARAMS ──
   function getParams() {
     return {
+      buildingType: currentType,
       N:     parseInt(document.getElementById('s-occ').value),
       E:     parseInt(document.getElementById('s-exits').value),
       cap:   parseFloat(document.getElementById('s-cap').value),
@@ -585,10 +741,9 @@
     box.scrollTop = box.scrollHeight;
   }
 
-  function clearLog() {
-    document.getElementById('logBox').innerHTML = '';
-  }
+  function clearLog() { document.getElementById('logBox').innerHTML = ''; }
 
+  // ── RUN ──
   function handleRun() {
     var btn = document.getElementById('runBtn');
     btn.disabled = true;
@@ -602,8 +757,10 @@
 
     var params = getParams();
     var iter   = parseInt(document.getElementById('s-iter').value);
+    var preset = BUILDING_PRESETS[params.buildingType];
 
-    log('Building: N=' + params.N + ', E=' + params.E + ', Ce=' + params.cap + ' p/s, L=' + params.L + 'm');
+    log('Building type: ' + preset.label.toUpperCase(), 'ok');
+    log('N=' + params.N + ', E=' + params.E + ', Ce=' + params.cap + ' p/s, L=' + params.L + 'm');
     log('Reaction time: mu=' + params.mu + 's, sigma=' + params.sigma + 's, dist=' + params.dist);
     log('Running ' + iter + ' Monte Carlo trials...', 'warn');
 
@@ -628,7 +785,7 @@
             var sens = sensitivityAnalysis(params, iter);
             pf.style.width = '100%';
             log('Sensitivity analysis complete.', 'ok');
-            log('All data saved. Click "View Results" to see charts.', 'ok');
+            log('All data saved. Redirecting to results...', 'ok');
 
             var sampleStep = Math.max(1, Math.floor(mc.results.length / 200));
             var sampledResults = [];
@@ -659,17 +816,15 @@
     }, 40);
   }
 
+  // ── INIT ──
   window.addEventListener('load', function() {
-    drawFloor();
+    selectBuildingType('office');
     window.addEventListener('resize', drawFloor);
 
     var res = loadResults();
     if (!res) {
       var vb = document.getElementById('viewResultsBtn');
-      if (vb) {
-        vb.style.opacity = '.4';
-        vb.style.pointerEvents = 'none';
-      }
+      if (vb) { vb.style.opacity = '.4'; vb.style.pointerEvents = 'none'; }
     }
   });
 </script>

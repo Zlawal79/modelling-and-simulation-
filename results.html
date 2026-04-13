@@ -14,7 +14,6 @@
       margin: 0 auto;
       padding: 2.5rem 2rem 4rem;
     }
-
     .results-header {
       display: flex;
       align-items: flex-end;
@@ -25,7 +24,6 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-
     .results-header h2 {
       font-family: var(--head);
       font-weight: 700;
@@ -34,18 +32,29 @@
       text-transform: uppercase;
       line-height: 1;
     }
-
-    .results-header h2 span {
-      color: var(--accent);
-    }
-
+    .results-header h2 span { color: var(--accent); }
     .results-meta {
       font-family: var(--mono);
       font-size: .65rem;
       color: var(--muted2);
       line-height: 2;
     }
-
+    .building-type-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .3rem .8rem;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(124,58,237,.3);
+      background: rgba(124,58,237,.08);
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
     .no-data {
       display: flex;
       flex-direction: column;
@@ -55,7 +64,6 @@
       gap: 1.2rem;
       text-align: center;
     }
-
     .no-data h3 {
       font-family: var(--head);
       font-size: 1.6rem;
@@ -63,52 +71,42 @@
       text-transform: uppercase;
       color: var(--muted2);
     }
-
     .no-data p {
       font-size: .85rem;
       color: var(--muted);
       max-width: 340px;
       line-height: 1.7;
     }
-
     .metrics-strip {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: .8rem;
       margin-bottom: 1.5rem;
     }
-
     .charts-top {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
       margin-bottom: 1rem;
     }
-
     .charts-bottom {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
       margin-bottom: 1rem;
     }
-
-    .charts-full {
-      margin-bottom: 1rem;
-    }
-
+    .charts-full { margin-bottom: 1rem; }
     .params-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: .5rem .8rem;
     }
-
     .param-pill {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: .4rem .6rem;
     }
-
     .param-pill-key {
       font-family: var(--mono);
       font-size: .57rem;
@@ -116,7 +114,6 @@
       text-transform: uppercase;
       color: var(--muted);
     }
-
     .param-pill-val {
       font-family: var(--mono);
       font-size: .78rem;
@@ -124,11 +121,11 @@
       font-weight: 500;
       margin-top: .1rem;
     }
-
-    .sens-card {
-      margin-bottom: 1rem;
+    .param-pill.highlight {
+      border-color: rgba(124,58,237,.4);
+      background: rgba(124,58,237,.06);
     }
-
+    .sens-card { margin-bottom: 1rem; }
     .chart-note {
       font-family: var(--mono);
       font-size: .6rem;
@@ -138,21 +135,17 @@
       align-items: center;
       gap: .4rem;
     }
-
     .chart-note::before {
       content: '';
       display: inline-block;
-      width: 12px;
-      height: 2px;
+      width: 12px; height: 2px;
       background: var(--danger);
     }
-
     @media (max-width: 900px) {
       .metrics-strip  { grid-template-columns: repeat(3, 1fr); }
       .charts-top     { grid-template-columns: 1fr; }
       .charts-bottom  { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 500px) {
       .metrics-strip { grid-template-columns: 1fr 1fr; }
     }
@@ -172,11 +165,11 @@
   <div class="results-page">
 
     <div class="no-data" id="noDataState">
-      <svg width="48" height="48" fill="none" stroke="rgba(0,212,170,0.3)" stroke-width="1.2" viewBox="0 0 24 24">
+      <svg width="48" height="48" fill="none" stroke="rgba(124,58,237,0.3)" stroke-width="1.2" viewBox="0 0 24 24">
         <path d="M3 3v18h18M7 16l4-4 4 4 4-8"/>
       </svg>
       <h3>No Results Yet</h3>
-      <p>Go to the Configure page, set your parameters and run the simulation to see results here.</p>
+      <p>Go to the Configure page, select a building type, set your parameters and run the simulation.</p>
       <a href="index.html" class="btn">Go to Configure</a>
     </div>
 
@@ -184,14 +177,13 @@
 
       <div class="results-header">
         <div>
+          <div id="buildingTypePill" class="building-type-pill">🏢 Office</div>
           <div class="label">Simulation Output</div>
           <h2>Evacuation <span>Results</span></h2>
         </div>
         <div class="results-meta" id="resultsMeta"></div>
         <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
-          <button class="btn" id="downloadBtn" onclick="handleDownload()">
-            Download PDF Report
-          </button>
+          <button class="btn" id="downloadBtn" onclick="handleDownload()">Download PDF Report</button>
           <a href="index.html" class="btn secondary">Reconfigure</a>
         </div>
       </div>
@@ -241,6 +233,7 @@
         <div class="chart-card">
           <div class="card-title">Average Peak Queue per Exit</div>
           <canvas id="queueChart"></canvas>
+          <div class="chart-note" id="queueNote" style="display:none">Exit 1 is main entrance — expected high load for malls</div>
         </div>
         <div class="card">
           <div class="card-title">Simulation Parameters Used</div>
@@ -274,16 +267,18 @@
       </div>
 
     </div>
-
   </div>
 </div>
 
 <script src="simulation.js"></script>
 <script src="report.js"></script>
 <script>
-  var charts  = {};
+  var charts   = {};
   var _params  = null;
   var _results = null;
+
+  var BTYPE_ICONS = { office: '🏢', school: '🏫', mall: '🏬', hospital: '🏥' };
+  var BTYPE_LABELS = { office: 'Office', school: 'School', mall: 'Mall', hospital: 'Hospital' };
 
   function handleDownload() {
     if (!_params || !_results) {
@@ -295,12 +290,8 @@
     btn.style.opacity = '.6';
     btn.style.pointerEvents = 'none';
     setTimeout(function() {
-      try {
-        generatePDFReport(_params, _results);
-      } catch(e) {
-        alert('PDF generation failed: ' + e.message);
-        console.error(e);
-      }
+      try { generatePDFReport(_params, _results); }
+      catch(e) { alert('PDF generation failed: ' + e.message); console.error(e); }
       btn.textContent = 'Download PDF Report';
       btn.style.opacity = '1';
       btn.style.pointerEvents = 'auto';
@@ -312,209 +303,106 @@
     var bins = 30;
     var bw   = (max - min) / bins;
     var counts = [], labels = [], colors = [];
-
     for (var i = 0; i < bins; i++) {
       counts.push(0);
       var mid = min + (i + 0.5) * bw;
       labels.push(mid.toFixed(0));
       colors.push(mid > Tsafe ? 'rgba(244,63,94,0.75)' : 'rgba(168,85,247,0.65)');
     }
-
     for (var j = 0; j < results.length; j++) {
       var b = Math.min(Math.floor((results[j] - min) / bw), bins - 1);
       counts[b]++;
     }
-
     if (charts.hist) charts.hist.destroy();
     var ctx = document.getElementById('histChart').getContext('2d');
     charts.hist = new Chart(ctx, {
       type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Trial Count',
-          data: counts,
-          backgroundColor: colors,
-          borderWidth: 0,
-          barPercentage: 1.0,
-          categoryPercentage: 1.0
-        }]
-      },
+      data: { labels: labels, datasets: [{ label: 'Trial Count', data: counts, backgroundColor: colors, borderWidth: 0, barPercentage: 1.0, categoryPercentage: 1.0 }] },
       options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              title: function(i) { return 'T ~ ' + i[0].label + 's'; },
-              label: function(i) { return i.raw + ' trials'; }
-            }
-          }
-        },
+        responsive: true, maintainAspectRatio: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { title: function(i) { return 'T ~ ' + i[0].label + 's'; }, label: function(i) { return i.raw + ' trials'; } } } },
         scales: {
-          x: {
-            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 },
-            grid: { color: 'rgba(124,58,237,0.08)' }
-          },
-          y: {
-            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
-            grid: { color: 'rgba(124,58,237,0.08)' }
-          }
+          x: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 }, grid: { color: 'rgba(124,58,237,0.08)' } },
+          y: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } }, grid: { color: 'rgba(124,58,237,0.08)' } }
         }
       }
     });
   }
 
   function buildCDF(results, Tsafe) {
-    var sorted = results.slice().sort(function(a, b) { return a - b; });
-    var step   = Math.max(1, Math.floor(sorted.length / 60));
+    var sorted = results.slice().sort(function(a,b){return a-b;});
+    var step = Math.max(1, Math.floor(sorted.length / 60));
     var labels = [], data = [];
-
     for (var i = 0; i < sorted.length; i += step) {
       labels.push(sorted[i].toFixed(0));
-      data.push(((i + 1) / sorted.length * 100).toFixed(2));
+      data.push(((i+1) / sorted.length * 100).toFixed(2));
     }
-
     if (charts.cdf) charts.cdf.destroy();
     var ctx = document.getElementById('cdfChart').getContext('2d');
     charts.cdf = new Chart(ctx, {
       type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'CDF (%)',
-          data: data,
-          borderColor: '#a855f7',
-          backgroundColor: 'rgba(168,85,247,0.06)',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 0,
-          borderWidth: 2
-        }]
-      },
+      data: { labels: labels, datasets: [{ label: 'CDF (%)', data: data, borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.06)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }] },
       options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function(i) { return i.raw + '% of trials <= ' + i.label + 's'; }
-            }
-          }
-        },
+        responsive: true, maintainAspectRatio: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(i) { return i.raw + '% of trials <= ' + i.label + 's'; } } } },
         scales: {
-          x: {
-            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 },
-            grid: { color: 'rgba(124,58,237,0.08)' }
-          },
-          y: {
-            ticks: {
-              color: '#8b7aab',
-              font: { family: 'IBM Plex Mono', size: 9 },
-              callback: function(v) { return v + '%'; }
-            },
-            grid: { color: 'rgba(124,58,237,0.08)' }
-          }
+          x: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, maxTicksLimit: 8 }, grid: { color: 'rgba(124,58,237,0.08)' } },
+          y: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 }, callback: function(v){return v+'%';} }, grid: { color: 'rgba(124,58,237,0.08)' } }
         }
       }
     });
   }
 
-  function buildQueueChart(avgQ, E) {
+  function buildQueueChart(avgQ, E, buildingType) {
     var labels = [], colors = [];
     for (var i = 0; i < E; i++) {
-      labels.push('Exit ' + (i + 1));
+      // for mall, label exit 0 as "Main Entrance"
+      labels.push(buildingType === 'mall' && i === 0 ? 'Main Entrance' : 'Exit ' + (i+1));
       colors.push(
         avgQ[i] > 30 ? 'rgba(244,63,94,0.75)' :
         avgQ[i] > 15 ? 'rgba(245,158,11,0.75)' :
         'rgba(168,85,247,0.75)'
       );
     }
-
     if (charts.queue) charts.queue.destroy();
     var ctx = document.getElementById('queueChart').getContext('2d');
     charts.queue = new Chart(ctx, {
       type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Avg Peak Queue Length',
-          data: avgQ,
-          backgroundColor: colors,
-          borderWidth: 0,
-          borderRadius: 3
-        }]
-      },
+      data: { labels: labels, datasets: [{ label: 'Avg Peak Queue Length', data: avgQ, backgroundColor: colors, borderWidth: 0, borderRadius: 3 }] },
       options: {
-        responsive: true,
-        maintainAspectRatio: true,
+        responsive: true, maintainAspectRatio: true,
         plugins: { legend: { display: false } },
         scales: {
-          x: {
-            ticks: { color: '#6b5c8a', font: { family: 'IBM Plex Mono', size: 10 } },
-            grid: { display: false }
-          },
-          y: {
-            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
-            grid: { color: 'rgba(124,58,237,0.08)' }
-          }
+          x: { ticks: { color: '#6b5c8a', font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false } },
+          y: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } }, grid: { color: 'rgba(124,58,237,0.08)' } }
         }
       }
     });
+
+    // show mall queue note
+    var qNote = document.getElementById('queueNote');
+    if (qNote) qNote.style.display = buildingType === 'mall' ? 'flex' : 'none';
   }
 
   function buildSensChart(sensData) {
     var labels = [], deltas = [], colors = [];
-    var palette = [
-      'rgba(168,85,247,0.8)',
-      'rgba(244,63,94,0.75)',
-      'rgba(245,158,11,0.75)',
-      'rgba(99,179,237,0.75)',
-      'rgba(52,211,153,0.75)'
-    ];
-
+    var palette = ['rgba(168,85,247,0.8)','rgba(244,63,94,0.75)','rgba(245,158,11,0.75)','rgba(99,179,237,0.75)','rgba(52,211,153,0.75)'];
     for (var i = 0; i < sensData.length; i++) {
       labels.push(sensData[i].label);
       deltas.push(parseFloat(sensData[i].delta));
       colors.push(palette[i % palette.length]);
     }
-
     if (charts.sens) charts.sens.destroy();
     var ctx = document.getElementById('sensChart').getContext('2d');
     charts.sens = new Chart(ctx, {
       type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Delta T95 (s)',
-          data: deltas,
-          backgroundColor: colors,
-          borderWidth: 0,
-          borderRadius: 3
-        }]
-      },
+      data: { labels: labels, datasets: [{ label: 'Delta T95 (s)', data: deltas, backgroundColor: colors, borderWidth: 0, borderRadius: 3 }] },
       options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: true,
+        indexAxis: 'y', responsive: true, maintainAspectRatio: true,
         plugins: { legend: { display: false } },
         scales: {
-          x: {
-            ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } },
-            grid: { color: 'rgba(124,58,237,0.08)' },
-            title: {
-              display: true,
-              text: 'Delta T95 (seconds)',
-              color: '#8b7aab',
-              font: { family: 'IBM Plex Mono', size: 9 }
-            }
-          },
-          y: {
-            ticks: { color: '#1a1035', font: { family: 'IBM Plex Sans', size: 11 } },
-            grid: { display: false }
-          }
+          x: { ticks: { color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } }, grid: { color: 'rgba(124,58,237,0.08)' }, title: { display: true, text: 'Delta T95 (seconds)', color: '#8b7aab', font: { family: 'IBM Plex Mono', size: 9 } } },
+          y: { ticks: { color: '#1a1035', font: { family: 'IBM Plex Sans', size: 11 } }, grid: { display: false } }
         }
       }
     });
@@ -525,22 +413,15 @@
     for (var i = 0; i < sensData.length; i++) {
       if (parseFloat(sensData[i].delta) > maxDelta) maxDelta = parseFloat(sensData[i].delta);
     }
-
     var tbody = document.getElementById('sensTableBody');
     var rows  = '';
-
     for (var j = 0; j < sensData.length; j++) {
-      var s   = sensData[j];
+      var s = sensData[j];
       var pct = maxDelta > 0 ? (parseFloat(s.delta) / maxDelta * 100).toFixed(0) : 0;
       var impact, badgeClass;
-      if (parseFloat(s.delta) > maxDelta * 0.6) {
-        impact = 'HIGH';   badgeClass = 'badge-danger';
-      } else if (parseFloat(s.delta) > maxDelta * 0.3) {
-        impact = 'MEDIUM'; badgeClass = 'badge-warn';
-      } else {
-        impact = 'LOW';    badgeClass = 'badge-safe';
-      }
-
+      if (parseFloat(s.delta) > maxDelta * 0.6)      { impact = 'HIGH';   badgeClass = 'badge-danger'; }
+      else if (parseFloat(s.delta) > maxDelta * 0.3) { impact = 'MEDIUM'; badgeClass = 'badge-warn';   }
+      else                                            { impact = 'LOW';    badgeClass = 'badge-safe';   }
       rows += '<tr>' +
         '<td>' + s.label + '</td>' +
         '<td>' + s.lowVal + '</td>' +
@@ -548,35 +429,33 @@
         '<td>' + s.lowP95 + 's</td>' +
         '<td>' + s.hiP95 + 's</td>' +
         '<td style="color:var(--accent);font-weight:600">' + s.delta + 's</td>' +
-        '<td>' +
-          '<div class="bar-wrap">' +
-          '<div class="mini-bar" style="width:' + pct + '%"></div>' +
-          '<span class="badge ' + badgeClass + '">' + impact + '</span>' +
-          '</div>' +
-        '</td>' +
+        '<td><div class="bar-wrap"><div class="mini-bar" style="width:' + pct + '%"></div><span class="badge ' + badgeClass + '">' + impact + '</span></div></td>' +
         '</tr>';
     }
-
     tbody.innerHTML = rows;
   }
 
   function buildParamsGrid(params) {
-    var grid  = document.getElementById('paramsGrid');
+    var grid = document.getElementById('paramsGrid');
+    var btype = params.buildingType || 'office';
+    var btypeLabel = (BTYPE_ICONS[btype] || '') + ' ' + (BTYPE_LABELS[btype] || btype);
+
     var items = [
-      { k: 'N',       v: params.N + ' persons' },
-      { k: 'Exits',   v: params.E              },
-      { k: 'Ce',      v: params.cap + ' p/s'   },
-      { k: 'L',       v: params.L + ' m'       },
-      { k: 'mu_r',    v: params.mu + ' s'      },
-      { k: 'sigma_r', v: params.sigma + ' s'   },
-      { k: 'dist',    v: params.dist            },
-      { k: 'v',       v: params.v + ' m/s'     },
-      { k: 'T_safe',  v: params.Tsafe + ' s'   }
+      { k: 'Building Type', v: btypeLabel, hi: true },
+      { k: 'N',             v: params.N + ' persons' },
+      { k: 'Exits',         v: params.E },
+      { k: 'Ce',            v: params.cap + ' p/s' },
+      { k: 'L',             v: params.L + ' m' },
+      { k: 'mu_r',          v: params.mu + ' s' },
+      { k: 'sigma_r',       v: params.sigma + ' s' },
+      { k: 'dist',          v: params.dist },
+      { k: 'v',             v: params.v + ' m/s' },
+      { k: 'T_safe',        v: params.Tsafe + ' s' }
     ];
 
     var html = '';
     for (var i = 0; i < items.length; i++) {
-      html += '<div class="param-pill">' +
+      html += '<div class="param-pill' + (items[i].hi ? ' highlight' : '') + '">' +
         '<div class="param-pill-key">' + items[i].k + '</div>' +
         '<div class="param-pill-val">' + items[i].v + '</div>' +
         '</div>';
@@ -585,15 +464,9 @@
   }
 
   window.addEventListener('load', function() {
-    var params  = null;
-    var results = null;
-
-    try {
-      params  = loadParams();
-      results = loadResults();
-    } catch(e) {
-      console.error('Storage load error:', e);
-    }
+    var params = null, results = null;
+    try { params = loadParams(); results = loadResults(); }
+    catch(e) { console.error('Storage load error:', e); }
 
     _params  = params;
     _results = results;
@@ -602,12 +475,19 @@
       document.getElementById('noDataState').style.display    = 'flex';
       document.getElementById('resultsContent').style.display = 'none';
       var nd = document.getElementById('noDataState');
-      nd.innerHTML += '<p style="font-size:.7rem;color:#8b7aab;margin-top:.5rem">If you just ran the simulation, make sure you are using <strong>http://localhost:8000</strong> and not opening the file directly.</p>';
+      nd.innerHTML += '<p style="font-size:.7rem;color:#8b7aab;margin-top:.5rem">Make sure you are using <strong>http://localhost:8000</strong> and not opening the file directly.</p>';
       return;
     }
 
     document.getElementById('noDataState').style.display    = 'none';
     document.getElementById('resultsContent').style.display = 'block';
+
+    // building type pill
+    var btype = params.buildingType || 'office';
+    var pill  = document.getElementById('buildingTypePill');
+    if (pill) {
+      pill.textContent = (BTYPE_ICONS[btype] || '') + ' ' + (BTYPE_LABELS[btype] || btype);
+    }
 
     var meta = document.getElementById('resultsMeta');
     meta.innerHTML =
@@ -639,8 +519,8 @@
     }
 
     buildHistogram(results.results, params.Tsafe);
-    buildCDF(results.results,       params.Tsafe);
-    buildQueueChart(results.avgQ,   params.E);
+    buildCDF(results.results, params.Tsafe);
+    buildQueueChart(results.avgQ, params.E, btype);
     buildSensChart(results.sens);
     buildSensTable(results.sens);
     buildParamsGrid(params);
